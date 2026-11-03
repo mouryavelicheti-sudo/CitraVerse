@@ -1,0 +1,44 @@
+# =============================================================================
+# AgriVerse - Training Configuration
+# =============================================================================
+seed: 42
+device: "auto"          # auto | cpu | cuda
+
+image_size: 224
+batch_size: 32
+num_workers: 2
+
+teacher:
+  backbone: "resnet18"          # resnet18 | mobilenet_v3_large | efficientnet_b0
+  pretrained: true
+  epochs: 15
+  lr: 0.0003
+  weight_decay: 0.0001
+  freeze_backbone_epochs: 0
+
+student:
+  backbone: "mobilenet_v3_small"   # lightweight, edge-friendly
+  pretrained: true
+  epochs: 15
+  lr: 0.0005
+  weight_decay: 0.0001
+
+distillation:
+  temperature: 4.0        # T
+  lambda_ce: 0.4          # weight for classification loss (L_CE)
+  lambda_kd: 0.4          # weight for knowledge-distillation loss (L_KD)
+  lambda_signature: 0.2   # weight for evidence-signature preservation loss (L_signature)
+  # lambda_ce + lambda_kd + lambda_signature should sum to 1.0 (documented, checked at runtime)
+
+evidence:
+  deep_backbone: "resnet18"     # backbone used for deep semantic evidence Ed(x)
+  deep_feature_dim: 512
+  color_bins: 32
+  lbp_points: 24
+  lbp_radius: 3
+  glcm_distances: [1, 2]
+  glcm_angles_deg: [0, 45, 90, 135]
+  fusion_normalize: "l2"        # l2 | zscore | none
+
+checkpoint_dir: "models"
+log_dir: "outputs/logs"

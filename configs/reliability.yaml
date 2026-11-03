@@ -1,0 +1,32 @@
+# =============================================================================
+# AgriVerse - Reliability Scoring Configuration
+# =============================================================================
+# R(x) = w1*C(x) + w2*A(x) + w3*E(x),  w1 + w2 + w3 == 1 (enforced at runtime)
+#
+# C(x): prediction confidence (softmax max-probability of the classifier)
+# A(x): prototype agreement (similarity of Z(x) to the matching disease-
+#        specific evidence prototype P(c,d), aggregated across domains)
+# E(x): perturbation consistency (1 - normalized evidence drift under T_e(x))
+#
+# These weights are a documented design choice for this project, NOT a value
+# taken from prior literature. Tune them on a held-out VALIDATION set only.
+weights:
+  w1_confidence: 0.4
+  w2_prototype_agreement: 0.35
+  w3_perturbation_consistency: 0.25
+
+# Decision threshold tau: R(x) >= tau -> RELIABLE, else -> UNCERTAIN/EXPERT REVIEW
+# Select this on the validation set (e.g. maximize F1 of the reliability
+# decision against whether the classifier was actually correct), then freeze
+# it before touching the test set.
+tau: 0.6
+
+# DESS (Disease Evidence Stability Score) settings
+dess:
+  similarity_metric: "cosine"   # cosine | euclidean
+  aggregate_across_domains: "mean"   # mean | min
+
+# PCS (Perturbation Consistency Score) settings
+pcs:
+  aggregate_over_perturbations: "mean"
+  distance_metric: "l2"

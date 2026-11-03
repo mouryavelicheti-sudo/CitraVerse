@@ -1,0 +1,92 @@
+# =============================================================================
+# AgriVerse - Semantic Class Harmonization Map
+# =============================================================================
+# Maps EACH DATASET'S OWN class folder names to the six-class canonical
+# AgriVerse taxonomy. Every entry below was reviewed against the actual class
+# folder names found in Pakistan_Citrus, Bangladesh_Sweet_Orange, and
+# Bangladesh_lemon -- nothing here is a fuzzy/visual-similarity guess.
+#
+# `unknown_disease` is intentionally NOT part of the canonical taxonomy for
+# this six-class experiment. Classes with no defensible biological mapping to
+# one of the six target classes are listed in `excluded_classes` instead of
+# being force-mapped anywhere.
+#
+# Format:
+#   canonical_classes: the six target disease/health classes.
+#   mapping: dataset -> {original_folder_name: canonical_class}
+#     Only classes with a real mapping appear here.
+#   excluded_classes: "dataset:original_class" pairs that were reviewed and
+#     deliberately excluded from the six-class harmonized dataset (pests,
+#     unrelated symptoms, or diseases with no counterpart in the six-class
+#     taxonomy). These are NOT bugs -- they must stay excluded.
+
+canonical_classes:
+  - healthy
+  - citrus_canker
+  - citrus_greening_hlb
+  - black_spot
+  - melanose
+  - scab
+
+mapping:
+  # Pakistan_Citrus/Leaves/{healthy,Melanose,greening,Black spot,canker}
+  # Pakistan_Citrus/Fruits/{healthy,Scab,Black spot,Canker,Greening}
+  # Leaves and Fruits are groups, not classes -- see configs/datasets.yaml
+  # (layout: group_class_subfolders) and src/data/dataset_scanner.py.
+  Pakistan_Citrus:
+    healthy: healthy
+    Melanose: melanose
+    greening: citrus_greening_hlb
+    Black spot: black_spot
+    canker: citrus_canker
+    Canker: citrus_canker
+    Scab: scab
+    Greening: citrus_greening_hlb
+
+  # Bangladesh_Sweet_Orange/.../Converted Image/<class>
+  # Only these three classes have a defensible mapping into the six-class
+  # taxonomy. This dataset does NOT contain black_spot, melanose, or scab --
+  # see excluded_classes below and BUILD_STATUS.md / class availability notes.
+  Bangladesh_Sweet_Orange:
+    Citrus canker: citrus_canker
+    Citrus greening: citrus_greening_hlb
+    Healthy leaf: healthy
+
+  # Bangladesh_lemon/<class> (class folders directly under dataset root)
+  Bangladesh_lemon:
+    Healthy: healthy
+    Citrus Canker: citrus_canker
+    Greening: citrus_greening_hlb
+    Black Spot: black_spot
+    Melanose: melanose
+    Citrus_Scab: scab
+
+# Reviewed and intentionally excluded from the six-class harmonized dataset.
+# None of these are mapped to black_spot, melanose, scab, healthy, or
+# unknown_disease -- they are simply left out.
+excluded_classes:
+  # Bangladesh_Sweet_Orange: pests, unrelated symptoms, or diseases with no
+  # six-class counterpart.
+  - "Bangladesh_Sweet_Orange:Citrus mealybugs"
+  - "Bangladesh_Sweet_Orange:Die back"
+  - "Bangladesh_Sweet_Orange:Foliage damaged"
+  - "Bangladesh_Sweet_Orange:Powdery mildew"
+  - "Bangladesh_Sweet_Orange:Shot hole"
+  - "Bangladesh_Sweet_Orange:Spiny whitefly"
+  - "Bangladesh_Sweet_Orange:Yellow dragon"
+  - "Bangladesh_Sweet_Orange:Yellow leaves"
+
+  # Bangladesh_lemon: pests, unrelated symptoms, or diseases with no
+  # six-class counterpart.
+  - "Bangladesh_lemon:Algal_Leaf_Spot"
+  - "Bangladesh_lemon:Anthracnose"
+  - "Bangladesh_lemon:Bacterial Blight"
+  - "Bangladesh_lemon:Citrus Hindu Mite"
+  - "Bangladesh_lemon:Citrus Leafminer"
+  - "Bangladesh_lemon:Citrus_Pest"
+  - "Bangladesh_lemon:Curl Leaf"
+  - "Bangladesh_lemon:Dry Leaf"
+  - "Bangladesh_lemon:Lemon_Sooty_Mold"
+  - "Bangladesh_lemon:Spider Mites"
+  - "Bangladesh_lemon:Swallowtail Larval Herbivory (Deficiency)"
+  - "Bangladesh_lemon:Yellow_Spot"

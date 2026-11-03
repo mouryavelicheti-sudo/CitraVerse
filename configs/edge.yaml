@@ -1,0 +1,21 @@
+# =============================================================================
+# AgriVerse - Edge Optimization Configuration
+# =============================================================================
+quantization:
+  method: "dynamic"     # dynamic | static
+  backend: "qnnpack"     # qnnpack (ARM/edge) | fbgemm (x86 server)
+  calibration_batches: 20   # used only if method == static
+
+benchmark:
+  num_warmup_runs: 5
+  num_timed_runs: 30
+  batch_size_for_latency: 1
+
+perturbations:
+  # T_e(x): configurable visual perturbations used for both PCS (Module III)
+  # and robustness evaluation of the edge model.
+  brightness_delta: [-0.25, 0.25]
+  contrast_factor: [0.75, 1.25]
+  gaussian_noise_std: 0.03
+  gaussian_blur_kernel: 3
+  shadow_strength: 0.35

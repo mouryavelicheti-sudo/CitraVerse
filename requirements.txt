@@ -1,0 +1,29 @@
+# AgriVerse (CitraVerse) - reproducible environment
+#
+# torch/torchvision versions are intentionally left unpinned to a CUDA build
+# here because the right build depends on your machine (CPU-only vs CUDA
+# version). On Windows, install torch FIRST using the official selector at
+# https://pytorch.org/get-started/locally/ (pick your CUDA version, or CPU),
+# THEN install the rest of this file with:
+#
+#   pip install -r requirements.txt --no-deps torch torchvision  # if you already installed torch above
+#   pip install -r requirements.txt                              # otherwise, this will fetch a default CPU build
+#
+# Tested against Python 3.10-3.11.
+
+torch>=2.1,<3.0
+torchvision>=0.16,<1.0
+
+numpy>=1.24,<2.0
+pandas>=2.0
+opencv-python>=4.8
+Pillow>=10.0
+scikit-image>=0.21
+scikit-learn>=1.3
+matplotlib>=3.7
+seaborn>=0.12
+PyYAML>=6.0
+tqdm>=4.65
+imagehash>=4.3
+
+pytest>=7.4

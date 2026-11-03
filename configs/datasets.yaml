@@ -1,0 +1,75 @@
+# =============================================================================
+# AgriVerse - Dataset Configuration
+# =============================================================================
+# Three real datasets are configured below. Each has a genuinely different
+# on-disk layout, so each dataset entry declares its own `layout` explicitly
+# rather than relying on auto-detection:
+#
+#   Bangladesh_lemon         layout A: root/<class>/<image>
+#   Pakistan_Citrus          layout B: root/<group: Leaves|Fruits>/<class>/<image>
+#                                       (Leaves/Fruits are NOT disease classes --
+#                                        they are preserved as group/provenance
+#                                        metadata by the scanner.)
+#   Bangladesh_Sweet_Orange  layout C: root/<container>/<container>/<class>/<image>
+#                                       via `class_root_subpath`, which tells the
+#                                       scanner exactly which nested folder holds
+#                                       the class subfolders (here: the
+#                                       "Converted Image" folder, NOT the sibling
+#                                       "Original Image" / "Annotation" folders).
+#
+# `layout` and `class_root_subpath` are explicit and always override the
+# scanner's best-effort auto-detection (src/data/dataset_scanner.py).
+#
+# All paths below are repository-relative (resolved via
+# src/utils/io_utils.resolve_path against the project root) -- never hardcode
+# absolute machine-specific paths here.
+
+root: "Datasets"
+
+datasets:
+  Pakistan_Citrus:
+    path: "Datasets/Pakistan_Citrus"
+    layout: "group_class_subfolders"   # Leaves/<class>/*.jpg and Fruits/<class>/*.jpg
+    class_root_subpath: null
+    domain_id: "pakistan"
+    csv_label_file: null
+
+  Bangladesh_Sweet_Orange:
+    path: "Datasets/Bangladesh_Sweet_Orange"
+    layout: "class_subfolders"
+    # Real on-disk layout: Bangladesh_Sweet_Orange/Sweetorange/Sweetorange/{Original Image,Converted Image,Annotation}
+    # Only "Converted Image" contains reliable per-class folders; "Original Image"
+    # is unlabeled and "Annotation" is not needed since Converted Image already
+    # gives us class folders directly.
+    class_root_subpath: "Sweetorange/Sweetorange/Converted Image"
+    domain_id: "bangladesh_sweet_orange"
+    csv_label_file: null
+
+  Bangladesh_lemon:
+    path: "Datasets/Bangladesh_lemon"
+    layout: "class_subfolders"         # class folders directly under the dataset root
+    class_root_subpath: null
+    domain_id: "bangladesh_lemon"
+    csv_label_file: null
+
+# Only these extensions are treated as images; anything else (e.g. .txt/.xml
+# annotation files sitting alongside class folders) is ignored by the scanner.
+valid_extensions: [".jpg", ".jpeg", ".png"]
+
+# Splitting (Module I)
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  stratify_by: "canonical_class"
+  seed: 42
+
+# Duplicate / near-duplicate detection (Module I)
+dedup:
+  method: "phash"          # perceptual hash
+  hash_size: 8
+  near_duplicate_hamming_threshold: 5   # <= this distance => considered near-duplicate
+  remove_near_duplicates_across_splits: true
+
+# Image loading defaults (can be overridden by training.yaml)
+image_size: 224

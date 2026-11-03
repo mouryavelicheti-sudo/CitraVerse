@@ -1,0 +1,72 @@
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Large datasets
+Datasets/
+datasets/
+agriVerse/Datasets/
+
+# Generated logs and temporary files
+outputs/logs/
+*.log
+
+# Large intermediate files and exported datasets
+outputs/features/*.npz
+outputs/exports/
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Other Python tooling
+.coverage
+htmlcov/
+
+# Generated dataset exports and temporary artifacts
+outputs/dataset_profiles/
+outputs/predictions/
+outputs/gradcam/
+outputs/prototypes/
+
+# Local editor settings
+.vscode/
+
+# Ignore project documentation and research materials
+*.docx
+*.pdf
+
+# Ignore generated model files
+*.pt
+*.pth
+*.pkl
+*.h5
+*.onnx
+
+# Ignore generated visualization files
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# Ignore generated output files
+outputs/
+
+# Ignore local IDE files
+.idea/
